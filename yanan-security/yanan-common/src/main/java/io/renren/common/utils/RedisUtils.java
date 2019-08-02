@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtils {
     @Autowired
-    private RedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
     @Resource(name="redisTemplate")
     private ValueOperations<String, String> valueOperations;
     @Resource(name="redisTemplate")
@@ -82,7 +82,7 @@ public class RedisUtils {
     /**
      * Object转成JSON数据
      */
-    private String toJson(Object object){
+    public String toJson(Object object){
         if(object instanceof Integer || object instanceof Long || object instanceof Float ||
                 object instanceof Double || object instanceof Boolean || object instanceof String){
             return String.valueOf(object);
@@ -93,7 +93,7 @@ public class RedisUtils {
     /**
      * JSON数据，转成Object
      */
-    private <T> T fromJson(String json, Class<T> clazz){
+    public <T> T fromJson(String json, Class<T> clazz){
         return JSON.parseObject(json, clazz);
     }
 }

@@ -112,6 +112,7 @@ public class ScheduleJobController {
 	@RequestMapping("/pause")
 	@RequiresPermissions("sys:schedule:pause")
 	public R pause(@RequestBody Long[] jobIds){
+		
 		scheduleJobService.pause(jobIds);
 		
 		return R.ok();

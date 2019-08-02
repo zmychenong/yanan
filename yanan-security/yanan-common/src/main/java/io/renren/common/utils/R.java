@@ -54,6 +54,18 @@ public class R extends HashMap<String, Object> {
 	public static R ok() {
 		return new R();
 	}
+	
+	public R info(){
+		return R.error("WCF服务未正常开启");
+	}
+	
+	public static R getResult(Boolean result){
+		if(result){
+			return R.ok();
+		}else{
+			return R.error("操作失败！");
+		}
+	}
 
 	@Override
 	public R put(String key, Object value) {

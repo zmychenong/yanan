@@ -11,6 +11,8 @@ package io.renren.modules.sys.controller;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+
+import io.renren.common.utils.NoRepeatSubmit;
 import io.renren.common.utils.R;
 import io.renren.modules.sys.shiro.ShiroUtils;
 import org.apache.shiro.authc.*;
@@ -57,6 +59,7 @@ public class SysLoginController {
 	 * 登录
 	 */
 	@ResponseBody
+	@NoRepeatSubmit
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
 	public R login(String username, String password, String captcha) {
 		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
