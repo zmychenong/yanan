@@ -8,10 +8,13 @@
 
 package io.renren.modules.agv.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import io.renren.common.agvs.AGVOrderMessage;
 import io.renren.common.agvs.AGVSIServiceForView;
+import io.renren.common.agvs.ArrayOfAGVOrderMessage;
 import io.renren.common.agvs.WorkAreaName;
 import io.renren.common.utils.SingleAGV;
 import io.renren.modules.agv.service.AgvOrderService;
@@ -37,6 +40,13 @@ public class AgvOrderServiceImpl implements AgvOrderService {
 	public void delOrder(WorkAreaName name, Integer orderID) {
 		agv.delOrder(name, orderID);
 		
+	}
+
+	@Override
+	public List<AGVOrderMessage> getOrderList(WorkAreaName name) {
+		ArrayOfAGVOrderMessage arrayOfAGVOrderMessage = agv.getOrderArray(name);
+		List<AGVOrderMessage> orderList = arrayOfAGVOrderMessage.getAGVOrderMessage();
+		return orderList;
 	}
 
 }

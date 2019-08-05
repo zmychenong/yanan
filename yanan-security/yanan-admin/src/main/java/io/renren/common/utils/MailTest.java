@@ -19,7 +19,7 @@ public class MailTest {
         		+ "<div style='width:950px;font-family:arial;'>"
         		+ "欢迎使用雅南AGV智能监控系统，尊敬的用户："
         		+ "<br/>"
-        		+ "<h2 style='color:green'>+"
+        		+ "<h2 style='color:green'>"
         		+ "系统检测到相关服务异常断开，请及时重启或联系管理人员！"
         		+ "</h2>"
 				+ "<br/>"

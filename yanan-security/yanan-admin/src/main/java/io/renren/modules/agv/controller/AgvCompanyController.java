@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.common.agvs.Company;
+import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.NoRepeatSubmit;
 import io.renren.common.utils.R;
 import io.renren.modules.agv.service.AgvCompanyService;
@@ -40,15 +41,9 @@ public class AgvCompanyController {
 	/*
 	 * 添加公司
 	 */
+	@SysLog("添加公司")
 	@ApiOperation(value="添加公司信息",notes="ajax提交，提交方式:post,参数格式：json对象")
 	@RequestMapping(value="/add",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-	@ApiResponses({
-		@ApiResponse(code = 200,message = "成功！"),
-        @ApiResponse(code = 401,message = "未授权！"),
-        @ApiResponse(code = 404,message = "页面未找到！"),
-        @ApiResponse(code = 403,message = "出错了！"),
-        @ApiResponse(code = 400,message = "参数填写错误！")
-	})
 	@NoRepeatSubmit
 	public void addCompany(@RequestBody Company name){
 		Boolean result = agvCompanyService.addCompany(name);
@@ -58,15 +53,9 @@ public class AgvCompanyController {
 	/*
 	 * 删除公司
 	 */
+	@SysLog("删除公司")
 	@ApiOperation(value="删除公司信息",notes="ajax提交，提交方式:post,参数格式：json字符串")
 	@RequestMapping(value="/del",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-	@ApiResponses({
-		@ApiResponse(code = 200,message = "成功！"),
-        @ApiResponse(code = 401,message = "未授权！"),
-        @ApiResponse(code = 404,message = "页面未找到！"),
-        @ApiResponse(code = 403,message = "出错了！"),
-        @ApiResponse(code = 400,message = "参数填写错误！")
-	})
 	@NoRepeatSubmit
 	public void delCompany(@RequestParam Integer companyID){
 		Boolean result = agvCompanyService.delCompany(companyID);
@@ -76,15 +65,9 @@ public class AgvCompanyController {
 	/*
 	 * 修改公司
 	 */
+	@SysLog("修改公司")
 	@ApiOperation(value="修改公司信息",notes="ajax提交，提交方式:post,参数格式：json对象")
 	@RequestMapping(value="/modify",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-	@ApiResponses({
-		@ApiResponse(code = 200,message = "成功！"),
-        @ApiResponse(code = 401,message = "未授权！"),
-        @ApiResponse(code = 404,message = "页面未找到！"),
-        @ApiResponse(code = 403,message = "出错了！"),
-        @ApiResponse(code = 400,message = "参数填写错误！")
-	})
 	@NoRepeatSubmit
 	public void modifyCompany(@RequestBody Company name){
 		Boolean result = agvCompanyService.modifyCompany(name);
@@ -96,13 +79,6 @@ public class AgvCompanyController {
 	 */
 	@ApiOperation(value="获得单个公司对象",notes="ajax提交，提交方式:post,参数格式：json字符串")
 	@RequestMapping(value="/getCompany",method=RequestMethod.GET,produces="application/json;charset=utf-8")
-	@ApiResponses({
-		@ApiResponse(code = 200,message = "成功！"),
-        @ApiResponse(code = 401,message = "未授权！"),
-        @ApiResponse(code = 404,message = "页面未找到！"),
-        @ApiResponse(code = 403,message = "出错了！"),
-        @ApiResponse(code = 400,message = "参数填写错误！")
-	})
 	@NoRepeatSubmit
 	public R getCompany(@RequestParam Integer companyID){
 		Company company = agvCompanyService.getCompany(companyID);

@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "AGVS_ServiceForView", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://192.168.0.140:8733/AGVS_ServiceForView/?wsdl")
+@WebServiceClient(name = "AGVS_ServiceForView", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://192.168.0.120:8733/AGVS_ServiceForView/?wsdl")
 public class AGVSServiceForView
     extends Service
 {
@@ -30,7 +30,7 @@ public class AGVSServiceForView
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://192.168.0.140:8733/AGVS_ServiceForView/?wsdl");
+            url = new URL("http://192.168.0.120:8733/AGVS_ServiceForView/?wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

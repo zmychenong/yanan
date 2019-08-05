@@ -86,25 +86,24 @@ public class AgvStatusTask implements ITask {
 			redisNum=0;
 		} catch (WebServiceException e) {
 			wcfNum++;
-			logger.debug("WCF服务未正常开启");
+			
 		} catch (NullPointerException e) {
 			wcfNum++;
-			logger.debug("WCF服务未正常开启或某个值为空");
+			
 		} catch (JedisConnectionException e) {
 			redisNum++;
-			logger.debug("redis服务器连接异常");
+			
 		} catch(RedisConnectionFailureException e){
 			redisNum++;
-			logger.debug("redis服务器连接异常");
 		} finally{
 			if(wcfNum>=3){
 				Long[] jobIds = {(long) 2,(long) 3};
 				scheduleJobService.pause(jobIds);
-				MailTest.send("WCF");
+				//MailTest.send("WCF");
 			}else if(redisNum>=3){
 				Long[] jobIds = {(long) 2,(long) 3};
 				scheduleJobService.pause(jobIds);
-				MailTest.send("Redis");
+				//MailTest.send("Redis");
 			}
 		}
 
@@ -117,5 +116,29 @@ public class AgvStatusTask implements ITask {
 	public static void setParams(String param) {
 		AgvStatusTask.param = param;
 	}
+
+	public static int getRedisNum() {
+		return redisNum;
+	}
+
+	public static void setRedisNum(int redisNum) {
+		AgvStatusTask.redisNum = redisNum;
+	}
+
+	public static void setParam(String param) {
+		AgvStatusTask.param = param;
+	}
+
+	public static int getWcfNum() {
+		return wcfNum;
+	}
+
+	public static void setWcfNum(int wcfNum) {
+		AgvStatusTask.wcfNum = wcfNum;
+	}
+	
+	
+	
+	
 
 }

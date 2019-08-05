@@ -49,9 +49,11 @@ public class ControService implements ITask {
 
 			ArrayOfWorkAreaName arrayOfWorkAreaName = agv.getAllWorkArea();
 			Jedis jedis = JedisUtil.getJedis();
-			jedis.set("name", "吴航");
+			jedis.set("name", "xxx");
 			jedis.expire("name", 60);
 			JedisUtil.close(jedis);
+			wcfStatus = 1;
+			redisStatus =1;
 		} catch (WebServiceException e) {
 			logger.debug("WCF服务未正常开启");
 			wcfStatus = 0;
@@ -61,14 +63,23 @@ public class ControService implements ITask {
 		} catch (JedisConnectionException e) {
 			logger.debug("redis服务器连接异常");
 			redisStatus = 0;
-		} catch (RedisConnectionFailureException e) {
-			logger.debug("redis服务器连接异常");
-			redisStatus = 0;
-		} finally {
+		}  finally {
 			if (redisStatus != status && wcfStatus != status) {
+				logger.debug("所有服务正常开启！");
 				Long[] jobIds = {(long) 2,(long) 3};
 				scheduleJobService.resume(jobIds);
-				
+				AgvOrderTask.setRedisNum(0);
+				AgvOrderTask.setWcfNum(0);
+				AgvStatusTask.setRedisNum(0);
+				AgvStatusTask.setWcfNum(0);
+			}else{
+				logger.debug("服务异常关闭！");
+				Long[] jobIds = {(long) 2,(long) 3};
+				scheduleJobService.pause(jobIds);
+				AgvOrderTask.setRedisNum(0);
+				AgvOrderTask.setWcfNum(0);
+				AgvStatusTask.setRedisNum(0);
+				AgvStatusTask.setWcfNum(0);
 			}
 		}
 	}

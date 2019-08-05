@@ -6,6 +6,32 @@
     <title>欢迎页</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="${request.contextPath}/statics/css/bootstrap.min.css">
+    <script src="${request.contextPath}/statics/libs/jquery.min.js"></script>
+    <script type="text/javascript">
+    	debugger
+		function sendParameter(){
+			var jsonParam = {"companyID":"1","factoryID":"1","workAreaID":"1"};
+			$.ajax({
+                      type : "get", 
+                      url :"http://localhost:8080/yanan-admin/agv/order/selectWorkArea?companyID=1&factoryID=1&workAreaID=1", 
+                      /* data:JSON.stringify(jsonParam),
+                      datetype:"json",
+                      contentType:"application/json;charset=utf-8", */
+                      success : function(data) { 
+                         var msg = JSON.stringify(data);
+                         if(data.code == 0 ){
+                         	alert(msg);
+                         }else{
+                         	alert(data.msg);
+                         }
+                       },
+                       error : function(){
+                       	alert("失败");
+                       } 
+                });
+		
+		}
+	</script>
 </head>
 <body>
 <div class="panel panel-default">
@@ -21,6 +47,7 @@
 
        
     </div>
+    <button onclick="sendParameter()">点我传参数</button>
 </div>
 </body>
 </html>

@@ -100,11 +100,43 @@
                 <artifactId>spring-boot-devtools</artifactId>
                 <optional>true</optional>
         </dependency>
+        <!-- 发送邮件依赖 -->
 		<dependency >
             <groupId >com.sun.mail </groupId >
             <artifactId >javax.mail </artifactId >
             <version >1.6.2 </version >
         </dependency >
+        
+        <!-- 以下是打包war包依赖 -->
+        <!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			不依赖内嵌tomcat
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+        
+        排除springboot内置tomcat容器的SpringBootServletInitializer接口需要依赖 javax.servlet
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+        
+        本地调试集成tomcat
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-servlet-api</artifactId>
+			<version>8.0.36</version>
+			<scope>provided</scope>
+		</dependency> -->
+        
+        
 
         <dependency>
             <groupId>io.yanan</groupId>

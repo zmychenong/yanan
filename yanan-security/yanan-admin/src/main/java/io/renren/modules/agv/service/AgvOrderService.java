@@ -8,6 +8,8 @@
 
 package io.renren.modules.agv.service;
 
+import java.util.List;
+
 import io.renren.common.agvs.AGVOrderMessage;
 import io.renren.common.agvs.WorkAreaName;
 
@@ -27,4 +29,9 @@ public interface AgvOrderService {
 	 * 删除AGV任务
 	 */
 	void delOrder(WorkAreaName name,Integer orderID);
+	
+	/*
+	 * 查看工作区集合
+	 */
+	List<AGVOrderMessage> getOrderList(WorkAreaName name);
 }

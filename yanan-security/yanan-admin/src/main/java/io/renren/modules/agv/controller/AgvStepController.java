@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.common.agvs.AGVStepMessage;
 import io.renren.common.agvs.WorkAreaName;
+import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.NoRepeatSubmit;
 import io.renren.common.utils.R;
 import io.renren.modules.agv.service.AgvStepService;
@@ -39,6 +40,7 @@ public class AgvStepController {
 	/*
 	 * 添加节点
 	 */
+	@SysLog("添加工作区节点")
 	@ApiOperation(value="给某工作区添加节点",notes="ajax提交，两个对象：name和agvStep,参数格式：json字符串")
 	@RequestMapping(value="/add",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ApiImplicitParams({
@@ -55,6 +57,7 @@ public class AgvStepController {
 	/*
 	 * 删除节点
 	 */
+	@SysLog("删除工作区节点")
 	@ApiOperation(value="删除某个工作区节点",notes="ajax提交，两个对象：name和agvStep,参数格式：json字符串")
 	@RequestMapping(value="/del",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ApiImplicitParams({
@@ -70,6 +73,7 @@ public class AgvStepController {
 	/*
 	 * 修改节点
 	 */
+	@SysLog("修改工作区节点")
 	@ApiOperation(value="修改某个工作区节点",notes="ajax提交，两个对象：name和agvStep,参数格式：json字符串")
 	@RequestMapping(value="/modify",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ApiImplicitParams({

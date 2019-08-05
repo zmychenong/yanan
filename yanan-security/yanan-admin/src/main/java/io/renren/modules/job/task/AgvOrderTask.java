@@ -46,12 +46,13 @@ public class AgvOrderTask implements ITask {
 	private WorkAreaName workAreaName;
 	// 静态变量param用来保存公司ID，仓库ID，工作区ID
 	static String param;
-	//保存异常次数
-	static int wcfNum = 0 ;
-	static int redisNum = 0 ;
-	
+	// 保存异常次数
+	static int wcfNum = 0;
+	static int redisNum = 0;
+
 	@Autowired
 	private ScheduleJobService scheduleJobService;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run(String params) {
@@ -67,16 +68,15 @@ public class AgvOrderTask implements ITask {
 				if (allOrderList != null && !allOrderList.isEmpty()) {
 					WorkAreaName workAreaName = allOrderList.get(0);
 					ArrayOfAGVOrderMessage arrayOfAGVOrderMessage = agv.getOrderArray(workAreaName);
-					List<AGVOrderMessage> agvOrderMessage = arrayOfAGVOrderMessage.getAGVOrderMessage();
-					if (agvOrderMessage != null && !agvOrderMessage.isEmpty()) {
+
+					if (arrayOfAGVOrderMessage != null) {
+						List<AGVOrderMessage> agvOrderMessage = arrayOfAGVOrderMessage.getAGVOrderMessage();
 						String agvOrderList = JSON.toJSON(agvOrderMessage).toString();
 						jedis = JedisUtil.getJedis();
 						jedis.set("agvOrderList", agvOrderList);
 						jedis.expire("agvOrderList", 60);
 						JedisUtil.close(jedis);
-						
 					}
-
 				}
 			} else {
 				// 不为空则解析为json进行查询
@@ -102,8 +102,8 @@ public class AgvOrderTask implements ITask {
 			} else {
 				logger.debug("没有此工作区，请检查公司ID丶仓库ID丶工作区ID");
 			}
-			wcfNum=0;
-			redisNum=0;
+			wcfNum = 0;
+			redisNum = 0;
 		} catch (WebServiceException e) {
 			wcfNum++;
 			logger.debug("WCF服务未正常开启");
@@ -111,18 +111,17 @@ public class AgvOrderTask implements ITask {
 			wcfNum++;
 			logger.debug("WCF服务未正常开启或某个值为空");
 		} catch (JedisConnectionException e) {
+			logger.debug("redis服务器连接异常jedis");
 			redisNum++;
-			logger.debug("redis服务器连接异常");
-		} catch(RedisConnectionFailureException e){
-			redisNum++;
-			logger.debug("redis服务器连接异常");
-		} finally{
-			if(wcfNum>=3){
-				Long[] jobIds = {(long) 2,(long) 3};
+		}  finally {
+			System.out.println("wcfNum:" + wcfNum);
+			System.out.println("redisNum:" + redisNum);
+			if (wcfNum >= 3) {
+				Long[] jobIds = { (long) 2, (long) 3 };
 				scheduleJobService.pause(jobIds);
 				MailTest.send("WCF");
-			}else if(redisNum>=3){
-				Long[] jobIds = {(long) 2,(long) 3};
+			} else if (redisNum >= 3) {
+				Long[] jobIds = { (long) 2, (long) 3 };
 				scheduleJobService.pause(jobIds);
 				MailTest.send("Redis");
 			}
@@ -136,6 +135,22 @@ public class AgvOrderTask implements ITask {
 
 	public static void setParam(String param) {
 		AgvOrderTask.param = param;
+	}
+
+	public static int getWcfNum() {
+		return wcfNum;
+	}
+
+	public static void setWcfNum(int wcfNum) {
+		AgvOrderTask.wcfNum = wcfNum;
+	}
+
+	public static int getRedisNum() {
+		return redisNum;
+	}
+
+	public static void setRedisNum(int redisNum) {
+		AgvOrderTask.redisNum = redisNum;
 	}
 
 }

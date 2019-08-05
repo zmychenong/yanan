@@ -42,13 +42,14 @@ public class JedisUtil {
 	}
 
 	public static Jedis getJedis() {
-		if (jedis == null) {
+		/*if (jedis == null) {
 			synchronized (Jedis.class) {
 				if (jedis == null) {
 					jedis = pool.getResource();
 				}
 			}
-		}
+		}*/
+		jedis = pool.getResource();
 		return jedis;
 	}
 

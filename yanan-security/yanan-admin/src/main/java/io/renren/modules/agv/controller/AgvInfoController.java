@@ -15,13 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSONArray;
 
 import io.renren.common.agvs.AGVName;
 import io.renren.common.agvs.AGVSIServiceForView;
+import io.renren.common.agvs.AGVStatusMessage;
 import io.renren.common.agvs.ArrayOfAGVName;
 import io.renren.common.agvs.WorkAreaName;
 import io.renren.common.annotation.SysLog;
+import io.renren.common.utils.JedisUtil;
 import io.renren.common.utils.NoRepeatSubmit;
 import io.renren.common.utils.R;
 import io.renren.common.utils.SingleAGV;
@@ -30,6 +35,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import redis.clients.jedis.Jedis;
 
 /**
  * AGV小车信息
@@ -46,10 +53,16 @@ public class AgvInfoController {
 	@Autowired
 	private AgvInfoService agvInfoService;
 	
+	private AGVStatusMessage aGVStatusMessage = null;
+	private int LevelA = 0;
+	private int LevelB = 0;
+	private int LevelC = 0;
+	private int LevelD = 0;
+	
 	/*
 	 * AGV信息显示
 	 */
-	@ApiOperation(value="查看某个工作区小车信息列表",notes="ajax提交，提交方式:post,参数格式：json字符串")
+	/*@ApiOperation(value="查看某个工作区小车信息列表",notes="ajax提交，提交方式:post,参数格式：json字符串")
 	@RequestMapping(value="/list",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ApiImplicitParam(name="name",value="工作区对象",dataType="WorkAreaName",paramType="body")
 	@NoRepeatSubmit
@@ -59,7 +72,7 @@ public class AgvInfoController {
 		List<AGVName> agvName = arrayOfAGVName.getAGVName();
 		
 		return R.ok();
-	}
+	}*/
 	
 	
 	/*
@@ -125,4 +138,32 @@ public class AgvInfoController {
 		}
 		
 	}
+	
+	
+	/*
+	 * AGV电量接口
+	 */
+	@ApiOperation(value="AGV电量接口",notes="ajax提交，提交方式:post")
+	@RequestMapping(value="/getBatteryLevel",method=RequestMethod.GET)
+	@NoRepeatSubmit
+	public R getBatteryLevel(){
+		Jedis jedis = JedisUtil.getJedis();
+		List<Object> agvStatusList = JSONArray.parseArray(jedis.get("agvStatusList"));
+		for(int i =0;i<agvStatusList.size();i++){
+			aGVStatusMessage = (AGVStatusMessage) agvStatusList.get(i);
+			if(aGVStatusMessage.getBatteryLevel()>=0 && aGVStatusMessage.getBatteryLevel()<=25){
+				LevelA++;
+			}else if(aGVStatusMessage.getBatteryLevel()<=50){
+				LevelB++;
+			}else if(aGVStatusMessage.getBatteryLevel()<=75){
+				LevelC++;
+			}else if(aGVStatusMessage.getBatteryLevel()<=100){
+				LevelD++;
+			}
+		}
+		int[] arr = {LevelA,LevelB,LevelC,LevelD};
+		String LevelArray = JSONArray.toJSONString(arr);
+		return R.ok().put("LevelArray", LevelArray);
+	}
+	
 }

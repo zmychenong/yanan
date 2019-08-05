@@ -40,7 +40,7 @@ public class RedisAspect {
                 result = point.proceed();
             }catch (Exception e){
                 logger.error("redis error", e);
-                throw new RRException("Redis服务异常");
+                //throw new RRException("Redis服务异常");
             }
         }
         return result;
